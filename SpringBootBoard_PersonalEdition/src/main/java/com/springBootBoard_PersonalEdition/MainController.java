@@ -15,4 +15,10 @@ public class MainController {
 		
 		return "index";
 	}
+	
+	@GetMapping("/")
+	public String root() {
+		
+		return "redirect:/question/list";
+	}
 }
