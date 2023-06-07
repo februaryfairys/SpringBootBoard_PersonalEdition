@@ -5,3 +5,7 @@ textarea{
 input[type=submit] {
 	margin-top:10px;
 }
+
+.ws-pl {
+	white-space: pre-line;
+}

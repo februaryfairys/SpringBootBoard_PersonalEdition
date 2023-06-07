@@ -1,17 +1,23 @@
-<table>
-	<thead>
-		<tr>
-			<th>Subject</th>
-			<th>Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr th:each="question : ${questionList}">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<div class="container my-3">
+	<table class="table">
+		<thead class="table-dark">
+			<tr>
+				<th>No.</th>
+				<th>Subject</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="question, loop : ${questionList}">
 <!--			<td>[[${question.subject}]]</td>-->
-			<td>
-				<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
-			</td>
-			<td>[[${question.createDate}]]</td>
-		</tr>
-	</tbody>
-</table>
+				<td th:text="${loop.count}"></td>
+				<td>
+					<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+				</td>
+<!--			<td>[[${question.createDate}]]</td>-->
+				<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
