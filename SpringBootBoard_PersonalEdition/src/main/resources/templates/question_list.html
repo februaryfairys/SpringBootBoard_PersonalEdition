@@ -3,22 +3,21 @@
 		<table class="table">
 			<thead class="table-dark">
 				<tr>
-					<th>No.</th>
-					<th>Subject</th>
-					<th>Date</th>
+					<th><label>No.</label></th>
+					<th><label>Subject</label></th>
+					<th><label>Date</label></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="question, loop : ${questionList}">
-	<!--			<td>[[${question.subject}]]</td>-->
-					<td th:text="${loop.count}"></td>
+					<td><label>[[${loop.count}]]</label></td>
 					<td>
-						<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+						<a th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
 					</td>
-	<!--			<td>[[${question.createDate}]]</td>-->
-					<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+					<td><label>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</label></td>
 				</tr>
 			</tbody>
 		</table>
+		<a th:href="@{/question/create}" class="btn btn-primary float-end">New Question</a>
 	</div>
 </html>

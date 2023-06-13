@@ -28,8 +28,11 @@
 			</div>
 			<!-- 답변 반복 끝 -->
 			<!-- 답변 작성 -->
-			<form class="my-3" th:action="@{|/question/create/${question.id}|}" method="post">
-				<textarea class="form-control" name="content" id="content" rows="15"></textarea>
+			<form class="my-3" th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+					<div th:each="err : ${#fields.allErrors()}">[[${err}]]</div>
+				</div>
+				<textarea class="form-control" th:field="*{content}" rows="15"></textarea>
 				<input class="btn btn-primary my-2" type="submit" value="Answer">
 			</form>
 		</div>
