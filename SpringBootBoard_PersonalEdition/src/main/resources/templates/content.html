@@ -1,5 +1,10 @@
+<!--content.html-->
+
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content">
 		<div>content.html</div>
+		<div th:replace="~{common :: commonTemplate}"></div>
+		<div th:replace="~{common :: commonTomato}"></div>
+		<div th:replace="~{common :: commonGreen}"></div>
 	</div>
 </html>
