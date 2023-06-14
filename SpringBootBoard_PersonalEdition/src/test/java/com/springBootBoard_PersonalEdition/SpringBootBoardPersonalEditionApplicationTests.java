@@ -1,26 +1,20 @@
 package com.springBootBoard_PersonalEdition;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.springBootBoard_PersonalEdition.Answer.Answer;
-import com.springBootBoard_PersonalEdition.Question.Question;
 import com.springBootBoard_PersonalEdition.Question.QuestionRepository;
-
-import jakarta.transaction.Transactional;
+import com.springBootBoard_PersonalEdition.Question.QuestionService;
 
 @SpringBootTest
 class SpringBootBoardPersonalEditionApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+	
+	@Autowired
+	private QuestionService questionService;
 	
 //	@Autowired
 //	private AnswerRepository answerRepository;
@@ -135,16 +129,26 @@ class SpringBootBoardPersonalEditionApplicationTests {
 //		assertEquals("Test Answer #01", answer.getContent());
 //	}
 	
+//	@Test
+//	@Transactional
+//	void testJpa() {
+//		Optional<Question> oq = this.questionRepository.findById(1);
+//		assertTrue(oq.isPresent());
+//		Question question = oq.get();
+//		
+//		List<Answer> answerList = question.getAnswerList();
+//		
+//		assertEquals(1, answerList.size());
+//		assertEquals("Test Answer #01", answerList.get(0).getContent());
+//	}
 	@Test
-	@Transactional
 	void testJpa() {
-		Optional<Question> oq = this.questionRepository.findById(1);
-		assertTrue(oq.isPresent());
-		Question question = oq.get();
 		
-		List<Answer> answerList = question.getAnswerList();
-		
-		assertEquals(1, answerList.size());
-		assertEquals("Test Answer #01", answerList.get(0).getContent());
+		for(int i = 5; i<= 300; i++) {
+			String subject = String.format("Test Subject #%03d", i);
+			String content = String.format("Test Content #%03d", i);
+			
+			this.questionService.create(subject, content);
+		}
 	}
 }
