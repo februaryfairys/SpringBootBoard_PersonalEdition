@@ -10,7 +10,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="question, loop : ${paging}">
-					<td><label>[[${loop.count}]]</label></td>
+<!--				<td><label>[[${loop.count}]]</label></td>-->
+<!-- 					total contents - (now page * contents per page) - index -->
+					<td>[[${paging.getTotalElements - (paging.number * paging.size) - loop.index}]]</td>
 					<td>
 						<a th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
 					</td>
