@@ -15,6 +15,7 @@
 					<td>[[${paging.getTotalElements - (paging.number * paging.size) - loop.index}]]</td>
 					<td>
 						<a th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
+						<span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span>
 					</td>
 					<td><label>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</label></td>
 				</tr>
