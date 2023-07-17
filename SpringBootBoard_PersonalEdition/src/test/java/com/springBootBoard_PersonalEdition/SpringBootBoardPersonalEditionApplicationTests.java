@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.springBootBoard_PersonalEdition.Question.QuestionRepository;
-import com.springBootBoard_PersonalEdition.Question.QuestionService;
+import com.springBootBoard_PersonalEdition.question.QuestionRepository;
+import com.springBootBoard_PersonalEdition.question.QuestionService;
 
 @SpringBootTest
 class SpringBootBoardPersonalEditionApplicationTests {
