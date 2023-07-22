@@ -38,7 +38,7 @@ public class UserController {
 			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
 		} catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
-			bindingResult.reject("signupFailed", "This ID alreay used.");
+			bindingResult.reject("signupFailed", "This ID or Email alreay used.");
 			return "signup_form";
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -48,4 +48,10 @@ public class UserController {
 
 		return "redirect:/";
 	}
+	
+	@GetMapping("/signin")
+	public String signin() {
+		return "signin_form";
+	}
+	
 }
