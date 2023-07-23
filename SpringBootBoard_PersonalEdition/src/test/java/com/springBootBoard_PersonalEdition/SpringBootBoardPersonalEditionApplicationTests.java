@@ -148,7 +148,7 @@ class SpringBootBoardPersonalEditionApplicationTests {
 			String subject = String.format("Test Subject #%03d", i);
 			String content = String.format("Test Content #%03d", i);
 			
-			this.questionService.create(subject, content);
+			this.questionService.create(subject, content, null);
 		}
 	}
 }

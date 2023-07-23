@@ -30,7 +30,8 @@
 			<!-- 답변 작성 -->
 			<form class="my-3" th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post">
 				<div th:replace="~{form_errors :: formErrorsFragment}"></div>
-				<textarea class="form-control" th:field="*{content}" rows="15"></textarea>
+				<textarea class="form-control" th:field="*{content}" rows="15" sec:authorize="isAnonymous()" disabled></textarea>
+				<textarea class="form-control" th:field="*{content}" rows="15" sec:authorize="isAuthenticated()"></textarea>
 				<input class="btn btn-primary my-2" type="submit" value="Answer">
 			</form>
 		</div>

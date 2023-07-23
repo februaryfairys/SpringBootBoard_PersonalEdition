@@ -1,6 +1,9 @@
 package com.springBootBoard_PersonalEdition.question;
 
+import java.security.Principal;
+
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springBootBoard_PersonalEdition.answer.AnswerForm;
+import com.springBootBoard_PersonalEdition.user.SiteUser;
+import com.springBootBoard_PersonalEdition.user.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class QuestionController {
 
 	private final QuestionService questionService;
+	private final UserService	  userService;
 	
 	@GetMapping("/list")
 	public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
@@ -40,6 +46,7 @@ public class QuestionController {
 	}
 	
 	@GetMapping("/create")
+	@PreAuthorize("isAuthenticated()")
 	public String questionCreate(QuestionForm questionForm) {
 		
 		return "question_form";
@@ -50,11 +57,14 @@ public class QuestionController {
 	 *subject, content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩 된다. 
 	 *이것은 스프링 프레임워크의 바인딩 기능이다.**/
 	@PostMapping("/create")
-	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+	@PreAuthorize("isAuthenticated()") /*반드시 로그인이 필요한 메서드에는 본 애너테이션이 붙는다. Security Config와 함께 연계*/
+	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		if (bindingResult.hasErrors()) {
 			return "question_form";
 		}
-		this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+		
+		SiteUser siteUser = userService.getUser(principal.getName());
+		this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
 		return "redirect:/question/list";
 	}
 }

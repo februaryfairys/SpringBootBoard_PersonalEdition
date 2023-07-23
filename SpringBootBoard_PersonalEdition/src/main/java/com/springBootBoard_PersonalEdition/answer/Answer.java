@@ -3,6 +3,7 @@ package com.springBootBoard_PersonalEdition.answer;
 import java.time.LocalDateTime;
 
 import com.springBootBoard_PersonalEdition.question.Question;
+import com.springBootBoard_PersonalEdition.user.SiteUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,4 +30,7 @@ public class Answer {
 	private String content;
 	
 	private LocalDateTime createDate;
+	
+	@ManyToOne
+	private SiteUser author;
 }
