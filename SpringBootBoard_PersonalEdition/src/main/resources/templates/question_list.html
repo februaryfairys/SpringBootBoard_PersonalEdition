@@ -2,21 +2,23 @@
 	<div layout:fragment="content" class="container my-3">
 		<table class="table">
 			<thead class="table-dark">
-				<tr>
+				<tr class="text-center">
 					<th><label>No.</label></th>
-					<th><label>Subject</label></th>
+					<th style="width:50%"><label>Subject</label></th>
+					<th><label>writer</label></th>
 					<th><label>Date</label></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="question, loop : ${paging}">
+				<tr class="text-center" th:each="question, loop : ${paging}">
 <!--				<td><label>[[${loop.count}]]</label></td>-->
 <!-- 					total contents - (now page * contents per page) - index -->
 					<td>[[${paging.getTotalElements - (paging.number * paging.size) - loop.index}]]</td>
-					<td>
+					<td class="text-start">
 						<a th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
 						<span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span>
 					</td>
+					<td><span th:if="${question.author != null}">[[${question.author.username}]]</span></td>
 					<td><label>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</label></td>
 				</tr>
 			</tbody>
