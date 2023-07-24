@@ -31,6 +31,8 @@ public class Answer {
 	
 	private LocalDateTime createDate;
 	
+	private LocalDateTime modifyDate;
+	
 	@ManyToOne
 	private SiteUser author;
 }
