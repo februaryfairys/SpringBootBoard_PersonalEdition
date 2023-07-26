@@ -17,6 +17,8 @@
 						</div>
 					</div>
 					<div class="my-3 float-end">
+						<a th:data-uri="@{|/question/vote/${question.id}|}" class="btn btn-sm btn-outline-secondary recommend" 
+						   href="javascript:void(0);">❤<span class="badge rounded-pill bg-primary">[[${#lists.size(question.voter)}]]</span></a>
 						<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
 						   sec:authorize="isAuthenticated()"
 						   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}">[[Edit]]</a>
@@ -38,11 +40,13 @@
 							<div>[[${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}]]</div>
 						</div>
 						<div class="badge bg-light text-dark p-2 text-start">
-							<div class="mb-2"><span th:if="${answer.author != null}">[[${question.author.username}]]</span></div>
+							<div class="mb-2"><span th:if="${answer.author != null}">[[${answer.author.username}]]</span></div>
 							<div><label>[[${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}]]</label></div>
 						</div>
 					</div>
 					<div class="my-3 float-end">
+							<a th:data-uri="@{|/answer/vote/${answer.id}|}" class="btn btn-sm btn-outline-secondary recommend" 
+						   	   href="javascript:void(0);">❤<span class="badge rounded-pill bg-primary">[[${#lists.size(answer.voter)}]]</span></a>
 							<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
 							   sec:authorize="isAuthenticated()"
 							   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">[[Edit]]</a>
@@ -66,7 +70,16 @@
 		const delete_elements = document.getElementsByClassName("delete");
 		Array.from(delete_elements).forEach(function(element) {
 			element.addEventListener('click', function() {
-				if(confirm(("Delete this question."))){
+				if(confirm(("Delete this content."))){
+					location.href = this.dataset.uri;
+				}
+			});
+		});
+		
+		const recommend_elements = document.getElementsByClassName("recommend");
+		Array.from(recommend_elements).forEach(function(element) {
+			element.addEventListener('click', function() {
+				if(confirm(("Like this content."))){
 					location.href = this.dataset.uri;
 				}
 			});
