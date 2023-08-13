@@ -1,37 +1,31 @@
-package com.springBootBoard_PersonalEdition.answer;
+package com.springBootBoard_PersonalEdition.comment;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
-import com.springBootBoard_PersonalEdition.comment.Comment;
+import com.springBootBoard_PersonalEdition.answer.Answer;
 import com.springBootBoard_PersonalEdition.question.Question;
 import com.springBootBoard_PersonalEdition.user.SiteUser;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class Answer {
+public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
-	private Question question;
+	private SiteUser author;
 
-	@Column(columnDefinition = "TEXT")
 	private String content;
 
 	private LocalDateTime createDate;
@@ -39,13 +33,19 @@ public class Answer {
 	private LocalDateTime modifyDate;
 
 	@ManyToOne
-	private SiteUser author;
+	private Question question;
 
-	@ManyToMany
-	Set<SiteUser> voter;
-	// To using Set to prevent duplication of voter.
-	
-	@OneToMany(mappedBy = "answer")
-	private List<Comment> commentList;
+	@ManyToOne
+	private Answer answer;
 
+	public Integer getQuestionId() {
+		Integer result = null;
+
+		if (this.question != null) {
+			result = this.question.getId();
+		} else if (this.answer != null) {
+			result = this.answer.getQuestion().getId();
+		}
+		return result;
+	}
 }

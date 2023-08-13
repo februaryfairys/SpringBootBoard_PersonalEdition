@@ -34,8 +34,6 @@ public class QuestionController {
 	public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "keyWord", defaultValue = "") String keyWord) {
 
-//		List<Question> questionList = this.questionService.getList();
-//		model.addAttribute("questionList", questionList);
 		Page<Question> paging = this.questionService.getList(page, keyWord);
 		model.addAttribute("paging", paging);
 		model.addAttribute("keyWord", keyWord);
@@ -57,9 +55,9 @@ public class QuestionController {
 	}
 
 	/*
-	 * questionCreate 메서드의 매개변수를 subject, content 대신 QuestionForm 객체로 변경했다. subject,
-	 * content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩 된다. 이것은
-	 * 스프링 프레임워크의 바인딩 기능이다.
+	 * questionCreate 메서드의 매개변수를 subject, content 대신 QuestionForm 객체로 변경했다. 
+	 * subject, content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩 된다.
+	 * 이것은 스프링 프레임워크의 바인딩 기능이다.
 	 **/
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()") /* 반드시 로그인이 필요한 메서드에는 본 애너테이션이 붙는다. Security Config와 함께 연계 */

@@ -9,3 +9,8 @@
 .ws-pl {
 	white-space: pre-line;
 }
+
+.comment {
+	border-top: dotted 1ox #ddd;
+	font-size: 0.7em;
+}

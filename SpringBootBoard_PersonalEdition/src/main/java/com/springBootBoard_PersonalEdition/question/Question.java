@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.springBootBoard_PersonalEdition.answer.Answer;
+import com.springBootBoard_PersonalEdition.comment.Comment;
 import com.springBootBoard_PersonalEdition.user.SiteUser;
 
 import jakarta.persistence.CascadeType;
@@ -47,4 +48,7 @@ public class Question {
 	@ManyToMany
 	Set<SiteUser> voter;
 	// To using Set to prevent duplication of voter.
+	
+	@OneToMany(mappedBy = "question")
+	private List<Comment> commentList;
 }
