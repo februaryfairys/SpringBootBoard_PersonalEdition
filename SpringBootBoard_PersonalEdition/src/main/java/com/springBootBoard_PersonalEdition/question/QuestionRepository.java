@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.springBootBoard_PersonalEdition.user.SiteUser;
+
 public interface QuestionRepository extends JpaRepository<Question, Integer>{
 
 	List<Question> findBySubject(String subject);
@@ -19,6 +21,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	List<Question> findBySubjectOrContent(String subject, String content);
 	
 	List<Question> findByCreateDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
+	
+	Page<Question> findAllByAuthorOrderByCreateDateDesc(SiteUser author, Pageable pageable);
 	
 	List<Question> findByIdLessThan(Integer id);
 	

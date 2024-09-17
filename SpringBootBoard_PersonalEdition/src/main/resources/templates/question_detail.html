@@ -66,10 +66,10 @@
 					   	   href="javascript:void(0);">❤<span class="badge rounded-pill bg-secondary">[[${#lists.size(answer.voter)}]]</span></a>
 						<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
 						   sec:authorize="isAuthenticated()"
-						   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">[[Edit]]</a>
+						   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">Edit</a>
 						<a th:data-uri="@{|/answer/delete/${answer.id}|}" class="btn btn-sm btn-outline-secondary delete"
 						   sec:authorize="isAuthenticated()" href="javascript:void(0);"
-						   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">[[Delete]]</a>
+						   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">Delete</a>
 					</div>
 					<!-- 답변 댓글 -->
 					<div class="my-3">
@@ -95,7 +95,7 @@
 				<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 				<textarea class="form-control" th:field="*{content}" rows="15" sec:authorize="isAnonymous()" disabled></textarea>
 				<textarea class="form-control" th:field="*{content}" rows="15" sec:authorize="isAuthenticated()"></textarea>
-				<input class="btn btn-primary my-2 float-end" type="submit" value="Answer">
+				<input class="btn btn-outline-secondary my-2 float-end" type="submit" value="Answer">
 			</form>
 		</div>
 	</div>

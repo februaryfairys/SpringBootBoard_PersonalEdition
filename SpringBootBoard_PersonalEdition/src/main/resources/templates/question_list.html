@@ -21,7 +21,7 @@
 				<tr class="text-center" th:each="question, loop : ${paging}">
 					<td>[[${paging.getTotalElements - (paging.number * paging.size) - loop.index}]]</td>
 					<td class="text-start">
-						<a th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
+						<a  class="text-dark" th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
 						<span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span>
 					</td>
 					<td><span th:if="${question.author != null}">[[${question.author.username}]]</span></td>
@@ -30,7 +30,7 @@
 			</tbody>
 		</table>
 		<div th:replace="~{page :: pageFragment}"></div>
-		<a th:href="@{/question/create}" class="btn btn-primary float-end">New Question</a>
+		<a th:href="@{/question/create}" class="btn btn-outline-secondary float-end">New Question</a>
 		<form th:action="@{/question/list}" method="get" id="searchForm">
 			<input type="hidden" id="keyWord" name="keyWord" th:value="${keyWord}">
 			<input type="hidden" id="page"    name="page"    th:value="${paging.number}">

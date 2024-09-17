@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.springBootBoard_PersonalEdition.answer.AnswerForm;
@@ -40,6 +41,16 @@ public class QuestionController {
 		return "question_list";
 	}
 
+	@ResponseBody
+	@GetMapping("list/{page}")
+	public Page<Question> list(Principal principal, @PathVariable("page") Integer page) {
+
+		SiteUser user = this.userService.getUser(principal.getName());
+		Page<Question> paging = this.questionService.getListByAuthor(user, page);
+
+		return paging;
+	}
+
 	@GetMapping("/detail/{id}")
 	public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
 		Question question = this.questionService.getQuestion(id);
@@ -55,9 +66,9 @@ public class QuestionController {
 	}
 
 	/*
-	 * questionCreate 메서드의 매개변수를 subject, content 대신 QuestionForm 객체로 변경했다. 
-	 * subject, content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩 된다.
-	 * 이것은 스프링 프레임워크의 바인딩 기능이다.
+	 * questionCreate 메서드의 매개변수를 subject, content 대신 QuestionForm 객체로 변경했다. subject,
+	 * content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩 된다. 이것은
+	 * 스프링 프레임워크의 바인딩 기능이다.
 	 **/
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()") /* 반드시 로그인이 필요한 메서드에는 본 애너테이션이 붙는다. Security Config와 함께 연계 */
@@ -113,18 +124,18 @@ public class QuestionController {
 		if (!question.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not authorized to delete.");
 		}
-		
+
 		this.questionService.delete(question);
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/vote/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public String questionVote(Principal principal, @PathVariable("id") Integer id) {
-		
+
 		Question question = this.questionService.getQuestion(id);
 		SiteUser siteUser = this.userService.getUser(principal.getName());
-		
+
 		this.questionService.vote(question, siteUser);
 		return String.format("redirect:/question/detail/%s", id);
 	}

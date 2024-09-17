@@ -1,0 +1,212 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container my-3">
+		<div class="container my-3">
+			<h2 class="border-bottom py-2"><label>User details</label></h2>
+			<div class="card my-3">
+				<div class="card-body">
+					<h5 class="border-bottom py-2"><label>User name</label></h5>
+					<div class="card-text my-2"><label>[[|${siteUser.username}|]]</label></div>
+					<h5 class="border-bottom py-1 mt-3"><label>User email</label></h5>
+					<div class="card-text my-2"><label>[[|${siteUser.email}|]]</label></div>
+				</div>
+				<div class="card-body" id="passwordContainer">
+					<h5 class="border-bottom py-1 mt-3"><label>Accounts</label></h5>
+					<div class="accordion accordion-flush">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false">
+									Update password
+								</button>
+							</h2>
+							<div id="flush-collapseOne" class="accordion-collapse collapse">
+								<div class="my-2 float-start">
+									<div class="col-12">
+										<div th:replace="~{form_passwords :: updatePasswordFragment}"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false">
+									Drop out account
+								</button>
+							</h2>
+							<div id="flush-collapseTwo" class="accordion-collapse collapse">
+								<div class="my-2 float-start">
+									<div th:replace="~{form_passwords :: dropoutFragment}"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<h2 class="border-bottom py-2"><label>Questions</label></h2>
+			<div class="card my-3">
+				<div class="card-body">
+					<div class="accordion accordion-flush">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseQuestion" aria-expanded="false">
+									Show all questions
+								</button>
+							</h2>
+							<div id="flush-collapseQuestion" class="accordion-collapse collapse">
+								<div class="my-2">
+									<table class="table">
+										<thead class="table-secondary">
+											<tr class="text-center">
+												<th><label>No.</label></th>
+												<th style="width:50%"><label>Subject</label></th>
+												<th><label>Writer</label></th>
+												<th><label>Date</label></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="text-center" th:each="question, loop : ${questionList}">
+												<td>[[${#lists.size(questionList) - loop.index}]]</td>
+												<td class="text-start">
+													<a  class="text-dark" th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
+													<span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span>
+												</td>
+												<td><span th:if="${question.author != null}">[[${question.author.username}]]</span></td>
+												<td><label>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</label></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<h2 class="border-bottom py-2"><label>Answers</label></h2>
+			<div class="card my-3">
+				<div class="card-body">
+					<div class="accordion accordion-flush">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAnswer" aria-expanded="false">
+									Show all answers
+								</button>
+							</h2>
+						</div>
+						<div id="flush-collapseAnswer" class="accordion-collapse collapse">
+							<div class="my-2">
+								<table class="table">
+									<thead class="table-secondary">
+										<tr class="text-center">
+											<th><label>No.</label></th>
+											<th style="width:30%"><label>Question</label></th>
+											<th style="width:30%"><label>Answer</label></th>
+											<th><label>Writer</label></th>
+											<th><label>Date</label></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="text-center" th:each="answer, loop : ${answerList}">
+											<td>[[${#lists.size(answerList) - loop.index}]]</td>
+											<td class="text-start">
+												<a  class="text-dark" th:href="@{|/question/detail/${question.id}|}"><label>[[${question.subject}]]</label></a>
+												<span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span>
+											</td>
+											<td><span>[[answer.content]]</span></td>
+											<td><span th:if="${question.author != null}">[[${answer.author.username}]]</span></td>
+											<td><label>[[${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}]]</label></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<h2 class="border-bottom py-2"><label>Comments</label></h2>
+			<div class="card my-3">
+				<div class="card-body">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+<script layout:fragment="script">
+	document.addEventListener("DOMContentLoaded", function() {
+	    const currentPassword = document.querySelectorAll(".currentPassword");
+	
+	    currentPassword.forEach(input => {
+	        input.addEventListener("input", function() {
+	            const password = input.value;
+				const csrfToken = document.querySelector("[name='_csrf']").getAttribute("content");
+				
+	            fetch("/user/password/check", {
+	                method: "POST",
+	                headers: {
+	                    "Content-Type": "application/x-www-form-urlencoded",
+	                    "X-CSRF-TOKEN": csrfToken
+	                },
+	                body: `password=${encodeURIComponent(password)}`
+	            })
+	            .then(response => response.json())
+	            .then(data => {
+	                if (data === true) {
+	                    input.classList.add("border-success");
+	                    input.classList.remove("border-danger");
+	                } else {
+	                    input.classList.add("border-danger");
+	                    input.classList.remove("border-success");
+	                }
+	            })
+	            .catch(error => {
+	                console.error("Error:", error);
+	            });
+	        });
+	    });
+	});
+	
+	document.addEventListener("DOMContentLoaded", function() {
+		const newPassword = document.querySelectorAll(".newPassword");
+		
+		let password1 = "";
+    	let password2 = "";
+    	
+		newPassword.forEach((input, index) => {
+			input.addEventListener("input", function() {
+				if (index === 0) {
+	                password1 = input.value;
+	            } else if (index === 1) {
+	                password2 = input.value;
+	            }
+	            
+	            if ((password1 === password2) && password1.length > 0) {
+					newPassword.forEach(input => {
+	                    input.classList.add("border-success");
+	                    input.classList.remove("border-danger");
+	                });
+	            } else {
+					newPassword.forEach(input => {
+						input.classList.add("border-danger");
+	                    input.classList.remove("border-success");
+	                });
+	            }
+			});
+		});
+	});
+	
+	function updatePassword() {
+		const updatePassword = document.getElementById('updatePassword');
+		
+		if(!updatePassword.classList('border-success')){
+			//입력하세요 처리
+		} else {
+			
+		}
+	}
+	
+	function dropout() {
+		
+	}
+</script>
+</html>

@@ -52,9 +52,16 @@ public class QuestionService {
 			}
 		};
 	}
+	
 	public List<Question> getList() {
-
+		
 		return this.questionRepository.findAll();
+	}
+	
+	public Page<Question> getListByAuthor(SiteUser author, int page) {
+
+		Pageable pageable = PageRequest.of(page, 10);
+		return this.questionRepository.findAllByAuthorOrderByCreateDateDesc(author, pageable);
 	}
 
 	public Question getQuestion(Integer id) {
@@ -80,8 +87,6 @@ public class QuestionService {
 		List<Sort.Order> sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("createDate"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-//		Specification<Question> spec = search(keyWord);
-//		return this.questionRepository.findAll(spec, pageable);
 		return this.questionRepository.findAllByKeyword(keyWord, pageable);
 	}
 
